@@ -181,68 +181,24 @@
         
     library.__index = library
 
-    for _, path in next, library.folders do 
-        makefolder(library.directory .. path)
-    end
+    pcall(function()
+        if makefolder then
+            for _, path in next, library.folders do 
+                if isfolder and not isfolder(library.directory .. path) then
+                    makefolder(library.directory .. path)
+                end
+            end
+        end
+    end)
 
     local flags = library.flags 
     local config_flags = library.config_flags
 
-    -- Font importing system 
-        local fonts = {}; do
-            function Register_Font(Name, Weight, Style, Asset)
-                if not isfile(Asset.Id) then
-                    writefile(Asset.Id, Asset.Font)
-                end
-                
-                if isfile(Name .. ".font") then
-                    delfile(Name .. ".font")
-                end
-                
-                local Data = {
-                    name = Name,
-                    faces = {
-                        {
-                            name = "Regular",
-                            weight = Weight,
-                            style = Style,
-                            assetId = getcustomasset(Asset.Id),
-                        },
-                    },
-                }
-                
-                writefile(Name .. ".font", game:GetService("HttpService"):JSONEncode(Data))
-                
-                return getcustomasset(Name .. ".font");
-            end
-            
-            local ProggyTiny, ProggyClean
-            pcall(function()
-                ProggyTiny = Register_Font("Tahoma", 200, "Normal", {
-                    Id = "Tahoma.ttf",
-                    Font = game:HttpGet("https://github.com/i77lhm/storage/raw/refs/heads/main/fonts/tahoma_bold.ttf"),
-                })
-                ProggyClean = Register_Font("ProggyClean", 200, "normal", {
-                    Id = "ProggyClean.ttf",
-                    Font = game:HttpGet("https://github.com/i77lhm/storage/raw/refs/heads/main/fonts/ProggyClean.ttf")
-                })
-            end)
-            
-            fonts = {}
-            if ProggyTiny then
-                pcall(function() fonts["TahomaBold"] = Font.new(ProggyTiny, Enum.FontWeight.Regular, Enum.FontStyle.Normal) end)
-            end
-            if ProggyClean then
-                pcall(function() fonts["ProggyClean"] = Font.new(ProggyClean, Enum.FontWeight.Regular, Enum.FontStyle.Normal) end)
-            end
-            
-            if not fonts["TahomaBold"] then
-                fonts["TahomaBold"] = Font.fromEnum(Enum.Font.GothamBold)
-            end
-            if not fonts["ProggyClean"] then
-                fonts["ProggyClean"] = Font.fromEnum(Enum.Font.SourceSansBold)
-            end
-        end
+    -- 100% Native Crash-Proof Roblox Fonts (Zero getcustomasset / C++ Hook Crash)
+    local fonts = {
+        ["TahomaBold"] = Font.fromEnum(Enum.Font.GothamBold),
+        ["ProggyClean"] = Font.fromEnum(Enum.Font.SourceSansBold),
+    }
     --
 -- 
 
