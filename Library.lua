@@ -879,7 +879,7 @@
             return setmetatable(cfg, library)
         end 
 
-        local watermark = library:watermark({name = "SunnySide.cc - 100 fps - 100 ping"})
+        local watermark = library:watermark({name = "SunnySide.cc | User | 100 fps | 100ms"})
         local fps = 0
         local watermark_delay = tick() 
 
@@ -888,8 +888,9 @@
 
             if tick() - watermark_delay > 1 then 
                 watermark_delay = tick()
-                local ping = math.floor(stats.PerformanceStats.Ping:GetValue()) .. "ms"                
-                watermark.update_text(string.format("SunnySide.cc - fps: %s - ping: %s", fps, ping))
+                local ping = math.floor(stats.PerformanceStats.Ping:GetValue()) .. "ms"
+                local playerName = lp and lp.Name or "User"
+                watermark.update_text(string.format("SunnySide.cc | %s | fps: %s | ping: %s", playerName, fps, ping))
                 fps = 0
             end
         end)
