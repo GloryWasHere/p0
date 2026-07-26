@@ -535,6 +535,26 @@
         end 
     --
     
+        local function safe_cloneref(obj)
+            if cloneref then
+                local ok, res = pcall(function() return cloneref(obj) end)
+                if ok and res then return res end
+            end
+            return obj
+        end
+
+        local function protect_gui_object(gui)
+            pcall(function()
+                if syn and syn.protect_gui then
+                    syn.protect_gui(gui)
+                elseif protectgui then
+                    protectgui(gui)
+                elseif protect_gui then
+                    protect_gui(gui)
+                end
+            end)
+        end
+
         local function get_gui_parent()
             local p = nil
             pcall(function()
@@ -552,7 +572,7 @@
             if not p then
                 p = coregui
             end
-            return p
+            return safe_cloneref(p)
         end
 
         function library:window(properties)
@@ -563,12 +583,13 @@
             }
 
             library.gui = library:create("ScreenGui", {
-                Parent = get_gui_parent(),
                 Name = "SunnySideUI",
                 Enabled = true,
                 ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
                 IgnoreGuiInset = true,
             })
+            protect_gui_object(library.gui)
+            library.gui.Parent = get_gui_parent()
 
             -- Window
                 local window_outline = library:create("Frame", {
@@ -729,9 +750,10 @@
         local notifications = {notifs = {}} 
 
         library.sgui = library:create("ScreenGui", {
-            Name = "SunnySideNotifs",
-            Parent = get_gui_parent() 
+            Name = "SunnySideNotifs"
         })
+        protect_gui_object(library.sgui)
+        library.sgui.Parent = get_gui_parent()
 
         function notifications:refresh_notifs() 
             for i, v in notifications.notifs do 
