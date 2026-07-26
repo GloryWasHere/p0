@@ -1,6 +1,3 @@
--- Hi finobe here, this got leaked cuz i had a polish nazi (??) customer who tried leaking personal info about me for whatever reason??
--- Anyways I fixed the code up so if you're using the other one on my github then use this one instead
-
 -- Variables 
     local uis = game:GetService("UserInputService") 
     local players = game:GetService("Players") 
@@ -63,7 +60,7 @@
 
 -- Library init
     getgenv().library = {
-        directory = "priv9",
+        directory = "SunnySide.cc",
         folders = {
             "/fonts",
             "/configs",
@@ -526,7 +523,7 @@
     -- Library element functions
         function library:window(properties)
             local cfg = {
-                name = properties.name or properties.Name or "priv9",
+                name = properties.name or properties.Name or "SunnySide.cc",
                 size = properties.size or properties.Size or dim2(0, 600, 0, 400), 
                 selected_tab 
             }
@@ -815,7 +812,7 @@
         
         function library:watermark(options)
             local cfg = {
-                name = options.name or "nebulahax";
+                name = options.name or "SunnySide.cc";
             }
             
             -- Instances
@@ -882,7 +879,7 @@
             return setmetatable(cfg, library)
         end 
 
-        local watermark = library:watermark({name = "priv9 - 100 fps - 100 ping"})
+        local watermark = library:watermark({name = "SunnySide.cc - 100 fps - 100 ping"})
         local fps = 0
         local watermark_delay = tick() 
 
@@ -892,7 +889,7 @@
             if tick() - watermark_delay > 1 then 
                 watermark_delay = tick()
                 local ping = math.floor(stats.PerformanceStats.Ping:GetValue()) .. "ms"                
-                watermark.update_text(string.format("priv9 - fps: %s - ping: %s", fps, ping))
+                watermark.update_text(string.format("SunnySide.cc - fps: %s - ping: %s", fps, ping))
                 fps = 0
             end
         end)
