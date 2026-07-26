@@ -1659,8 +1659,9 @@
 
                 -- Instances
                     -- Element
+                        local parentFrame = self.elements or (self.parent and self.parent.elements) or self.elements_container
                         local colorpicker_element = library:create("TextButton", {
-                            Parent = self.elements;
+                            Parent = parentFrame;
                             BackgroundTransparency = 1;
                             Text = "";
                             AutoButtonColor = false;
