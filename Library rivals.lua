@@ -1,3 +1,6 @@
+-- Hi finobe here, this got leaked cuz i had a polish nazi (??) customer who tried leaking personal info about me for whatever reason??
+-- Anyways I fixed the code up so if you're using the other one on my github then use this one instead
+
 -- Variables 
     local uis = game:GetService("UserInputService") 
     local players = game:GetService("Players") 
@@ -919,9 +922,19 @@
 
             if tick() - watermark_delay > 1 then 
                 watermark_delay = tick()
-                local ping = math.floor(stats.PerformanceStats.Ping:GetValue()) .. "ms"
+                local pingVal = 0
+                pcall(function()
+                    if stats and stats:FindFirstChild("PerformanceStats") and stats.PerformanceStats:FindFirstChild("Ping") then
+                        pingVal = math.floor(stats.PerformanceStats.Ping:GetValue())
+                    end
+                end)
+                local pingStr = tostring(pingVal) .. "ms"
                 local playerName = lp and lp.Name or "User"
-                watermark.update_text(string.format("SunnySide.cc | %s | fps: %s | ping: %s", playerName, fps, ping))
+                if watermark and watermark.update_text then
+                    pcall(function()
+                        watermark.update_text(string.format("SunnySide.cc | %s | fps: %s | ping: %s", playerName, fps, pingStr))
+                    end)
+                end
                 fps = 0
             end
         end)
